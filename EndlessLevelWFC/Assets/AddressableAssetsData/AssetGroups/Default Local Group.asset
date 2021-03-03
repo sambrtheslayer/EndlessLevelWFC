@@ -16,15 +16,7 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 6d3140930cca65f48b6a109df07e9c48
-  m_SerializeEntries:
-  - m_GUID: 592f6172eb58e7340babbedf1451fbba
-    m_Address: Assets/Prefabs/TilePlacerWFC.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    m_MainAsset: {fileID: 400175907096179430, guid: 592f6172eb58e7340babbedf1451fbba,
-      type: 3}
-    m_TargetAsset: {fileID: 400175907096179430, guid: 592f6172eb58e7340babbedf1451fbba,
-      type: 3}
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 5237566c8cbc9c3428dde78b97b2bd05, type: 2}
   m_SchemaSet:

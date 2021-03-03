@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3785121084196010030
+--- !u!1 &470487197706128526
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,49 +8,41 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3785121084196010029}
-  - component: {fileID: 3785121084196010028}
+  - component: {fileID: 470487197706128527}
+  - component: {fileID: 470487197706128524}
   m_Layer: 0
-  m_Name: TilePrefabsStorage
-  m_TagString: Storage
+  m_Name: TilePlacerWfcTest
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3785121084196010029
+--- !u!4 &470487197706128527
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3785121084196010030}
+  m_GameObject: {fileID: 470487197706128526}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -7.1417055, y: -30.768852, z: 14.62855}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3785121084196010028
+--- !u!114 &470487197706128524
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3785121084196010030}
+  m_GameObject: {fileID: 470487197706128526}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c0dbb686782e9a45b656190b4f95964, type: 3}
+  m_Script: {fileID: 11500000, guid: b1de4ebcc2b12f14a88dea224585a055, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TilePrefabs:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  Tiles: {fileID: 0}
-  TilePlacerWfcPrefab: {fileID: 400175907096179430, guid: 592f6172eb58e7340babbedf1451fbba,
-    type: 3}
+  MapSize: {x: 10, y: 10}
+  LeftSideTiles: []
+  Storage: {fileID: 7238017656142381628, guid: d2e4d93077b76224fadc73a07958cf30, type: 3}

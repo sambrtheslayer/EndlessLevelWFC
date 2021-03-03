@@ -8,6 +8,15 @@ TagManager:
   - Chunk
   - Tile
   - Storage
+  - MapEnd
+  - Left
+  - Right
+  - Bottom
+  - Top
+  - LeftBottom
+  - RightBottom
+  - LeftTop
+  - RightTop
   layers:
   - Default
   - TransparentFX

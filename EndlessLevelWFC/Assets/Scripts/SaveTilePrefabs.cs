@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.IO;
 using System.Collections.Generic;
 using System;
 
@@ -9,7 +8,6 @@ public class SaveTilePrefabs : MonoBehaviour
     public List<VoxelTile> TilePrefabs;
     public GameObject Tiles;
     public GameObject TilePlacerWfcPrefab;
-    
 
     void Start()
     {
@@ -20,7 +18,7 @@ public class SaveTilePrefabs : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.G))
         {
-            Instantiate(TilePlacerWfcPrefab, new Vector3(0, 10, 0), Quaternion.identity);
+            Instantiate(TilePlacerWfcPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         }
     }
 

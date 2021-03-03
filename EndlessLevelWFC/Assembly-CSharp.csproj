@@ -64,9 +64,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\CubeMovement.cs" />
     <Compile Include="Assets\Scripts\Direction.cs" />
+    <Compile Include="Assets\Scripts\MapPlacerWfc.cs" />
     <Compile Include="Assets\Scripts\SaveTilePrefabs.cs" />
+    <Compile Include="Assets\Scripts\SaveTilePrefabsTest.cs" />
     <Compile Include="Assets\Scripts\TilePlacerWfc.cs" />
+    <Compile Include="Assets\Scripts\TilePlacerWfcTest.cs" />
     <Compile Include="Assets\Scripts\VoxelTile.cs" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.19f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>

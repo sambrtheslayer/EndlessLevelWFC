@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,16 +7,17 @@ using Random = UnityEngine.Random;
 
 public class TilePlacerWfc : MonoBehaviour
 {
+   
     private int seed;
 
     // Префабы тайлов
     private List<VoxelTile> TilePrefabs;
     GameObject TilePrefabsStorage;
 
-    public Vector2Int MapSize = new Vector2Int(10, 10);
+    public  Vector2Int MapSize = new Vector2Int(10, 10);
 
     // Тайлы, которые уже заспавнились на террейне
-    private VoxelTile[,] spawnedTiles;
+    public static VoxelTile[,] spawnedTiles;
 
     // Очередь из векторов положений тайлов, которые нужно пересчитать
     private Queue<Vector2Int> recalcPossibleTilesQueue = new Queue<Vector2Int>();
@@ -44,6 +46,7 @@ public class TilePlacerWfc : MonoBehaviour
         // Delete map
         if (Input.GetKeyDown(KeyCode.D))
         {
+
             foreach (VoxelTile spawnedTile in spawnedTiles)
             {
                 if (spawnedTile != null) Destroy(spawnedTile.gameObject);
@@ -88,7 +91,8 @@ public class TilePlacerWfc : MonoBehaviour
 
         }
 
-        PlaceAllTiles();
+        StartCoroutine(PlaceAllTiles());
+        //PlaceAllTiles();
     }
 
     private bool GenerateAllPossibleTiles()
@@ -191,13 +195,15 @@ public class TilePlacerWfc : MonoBehaviour
         return true;
     }
 
-    private void PlaceAllTiles()
+    private IEnumerator PlaceAllTiles()
     {
         for (int x = 1; x < MapSize.x - 1; x++)
         {
             for (int y = 1; y < MapSize.y - 1; y++)
             {
+                
                 PlaceTile(x, y);
+                yield return new WaitForSeconds(0.0001f);
             }
         }
     }
@@ -217,8 +223,58 @@ public class TilePlacerWfc : MonoBehaviour
 
         VoxelTile selectedTile = GetRandomTile(possibleTiles[x, y]);
         Vector3 position = selectedTile.voxelSize * selectedTile.tileVoxelSize * new Vector3(x, 0, y);
-        spawnedTiles[x, y] = Instantiate(selectedTile, position + new Vector3(0, 5, 0), selectedTile.transform.rotation);
+
+        spawnedTiles[x, y] = Instantiate(selectedTile, position, selectedTile.transform.rotation);
         spawnedTiles[x, y].transform.parent = gameObject.transform;
+
+        if (x == 1)
+        {
+            if (y == 1)
+            {
+                spawnedTiles[x, y].transform.GetChild(0).tag = "LeftBottom";
+            }
+            else if(y == MapSize.y - 2)
+            {
+                spawnedTiles[x, y].transform.GetChild(0).tag = "LeftTop";
+            }
+            else
+            {
+                spawnedTiles[x, y].transform.GetChild(0).tag = "Left";
+            }
+        }
+        else if (x == MapSize.x - 2)
+        {
+            if (y == 1)
+            {
+                spawnedTiles[x, y].transform.GetChild(0).tag = "RightBottom";
+            }
+            else if (y == MapSize.y - 2)
+            {
+                spawnedTiles[x, y].transform.GetChild(0).tag = "RightTop";
+            }
+            else
+            {
+                spawnedTiles[x, y].transform.GetChild(0).tag = "Right";
+            }
+
+        }
+        else if (y == 1)
+        {
+
+            spawnedTiles[x, y].transform.GetChild(0).tag = "Bottom";
+
+        }
+        else if(y == MapSize.y - 2)
+        {
+
+            spawnedTiles[x, y].transform.GetChild(0).tag = "Top";
+        }
+
+        /*if (x == 1 || x == MapSize.x - 2
+         || y == 1 || y == MapSize.y - 2)
+        {
+            spawnedTiles[x, y].transform.GetChild(0).tag = "MapEnd";
+        }*/
     }
 
     private VoxelTile GetRandomTile(List<VoxelTile> availableTiles)
@@ -272,5 +328,4 @@ public class TilePlacerWfc : MonoBehaviour
                 nameof(direction));
         }
     }
-
 }
