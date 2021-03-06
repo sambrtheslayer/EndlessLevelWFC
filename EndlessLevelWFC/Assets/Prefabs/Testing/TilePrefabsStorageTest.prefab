@@ -52,6 +52,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   Tiles: {fileID: 0}
-  TilePlacerWfcPrefab: {fileID: 470487197706128526, guid: 33b78ffbbbb88ca45b83c219835f07be,
-    type: 3}
   Map: {fileID: 3116733635726243169, guid: b0101033507c02d4c99d8074af0394f2, type: 3}
+  EmptyMap: {fileID: 5967748869840603470, guid: 20cc31cd13f49a646a4976cacf45572d,
+    type: 3}

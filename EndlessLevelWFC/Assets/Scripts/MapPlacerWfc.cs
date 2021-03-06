@@ -72,7 +72,7 @@ public class MapPlacerWfc : MonoBehaviour
         {
             Random.InitState(seed);
             Generate();
-        }
+        }  
     }
 
  
@@ -110,19 +110,19 @@ public class MapPlacerWfc : MonoBehaviour
         
         if(mapEndTag == "Left")
         {
-            TilePrefabsStorage.GetComponent<SaveTilePrefabsTest>().CreateLeftNeighbour(SideTiles);
+            TilePrefabsStorage.GetComponent<SaveTilePrefabsTest>().CreateLeftNeighbour(SideTiles, gameObject);
         }
         else if(mapEndTag == "Right")
         {
-            TilePrefabsStorage.GetComponent<SaveTilePrefabsTest>().CreateRightNeighbour(SideTiles);
+            TilePrefabsStorage.GetComponent<SaveTilePrefabsTest>().CreateRightNeighbour(SideTiles, gameObject);
         }
         else if(mapEndTag == "Top")
         {
-            TilePrefabsStorage.GetComponent<SaveTilePrefabsTest>().CreateTopNeighbour(SideTiles);
+            TilePrefabsStorage.GetComponent<SaveTilePrefabsTest>().CreateTopNeighbour(SideTiles, gameObject);
         }
         else
         {
-            TilePrefabsStorage.GetComponent<SaveTilePrefabsTest>().CreateBottomNeighbour(SideTiles);
+            TilePrefabsStorage.GetComponent<SaveTilePrefabsTest>().CreateBottomNeighbour(SideTiles, gameObject);
         }
         
 
@@ -334,6 +334,7 @@ public class MapPlacerWfc : MonoBehaviour
 
         spawnedTiles[x, y] = Instantiate(selectedTile, position, selectedTile.transform.rotation);
         spawnedTiles[x, y].transform.parent = gameObject.transform;
+        spawnedTiles[x, y].transform.localPosition = position;
 
         if (x == 1)
         {

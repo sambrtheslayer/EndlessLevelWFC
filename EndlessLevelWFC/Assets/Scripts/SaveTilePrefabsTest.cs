@@ -12,6 +12,7 @@ public class SaveTilePrefabsTest : MonoBehaviour
     
     public MapList<GameObject> mapList = new MapList<GameObject>();
     public GameObject Map;
+    public GameObject EmptyMap;
 
     void Start()
     {
@@ -25,30 +26,34 @@ public class SaveTilePrefabsTest : MonoBehaviour
             mapList.AddStartMap(Instantiate(Map, new Vector3(0, 0, 0), Quaternion.identity));
         }
     }
-    public void CreateTopNeighbour(List<VoxelTile> _sideTiles)
+    public void CreateTopNeighbour(List<VoxelTile> _sideTiles, GameObject neighbour)
     {
-        var topMap = Instantiate(Map, new Vector3(0, 0, 0), Quaternion.identity);
+        Vector3 neighbourPos = neighbour.transform.position;
+        var topMap = Instantiate(Map, neighbourPos +  new Vector3(0, 0, 6.4f), Quaternion.identity);
         topMap.GetComponent<MapPlacerWfc>().forwardSidesTiles = _sideTiles;
-        //mapList.AddNeighbour(mapList.start, rightMap, Direction.Right);
+        //mapList.AddNeighbour(mapList.start, topMap, Direction.Forward);
     }
 
-    public void CreateBottomNeighbour(List<VoxelTile> _sideTiles)
+    public void CreateBottomNeighbour(List<VoxelTile> _sideTiles, GameObject neighbour)
     {
-        var bottomMap = Instantiate(Map, new Vector3(0, 0, 0), Quaternion.identity);
+        Vector3 neighbourPos = neighbour.transform.position;
+        var bottomMap = Instantiate(Map, neighbourPos + new Vector3(0, 0, -6.4f), Quaternion.identity);
         bottomMap.GetComponent<MapPlacerWfc>().backSidesTiles = _sideTiles;
-        //mapList.AddNeighbour(mapList.start, rightMap, Direction.Right);
+        //mapList.AddNeighbour(mapList.start, bottomMap, Direction.Back);
     }
 
-    public void CreateLeftNeighbour(List<VoxelTile> _sideTiles)
+    public void CreateLeftNeighbour(List<VoxelTile> _sideTiles, GameObject neighbour)
     {
-        var leftMap = Instantiate(Map, new Vector3(0, 0, 0), Quaternion.identity);
+        Vector3 neighbourPos = neighbour.transform.position;
+        var leftMap = Instantiate(Map, neighbourPos + new Vector3(-6.4f, 0, 0), Quaternion.identity);
         leftMap.GetComponent<MapPlacerWfc>().leftSidesTiles = _sideTiles;
         //mapList.AddNeighbour(mapList.start, leftMap, Direction.Left);
     }
 
-    public void CreateRightNeighbour(List<VoxelTile> _sideTiles)
+    public void CreateRightNeighbour(List<VoxelTile> _sideTiles, GameObject neighbour)
     {
-        var rightMap = Instantiate(Map, new Vector3(0, 0, 0), Quaternion.identity);
+        Vector3 neighbourPos = neighbour.transform.position;
+        var rightMap = Instantiate(Map, neighbourPos + new Vector3(6.4f, 0, 0), Quaternion.identity);
         rightMap.GetComponent<MapPlacerWfc>().rightSidesTiles = _sideTiles;
         //mapList.AddNeighbour(mapList.start, rightMap, Direction.Right);
     }

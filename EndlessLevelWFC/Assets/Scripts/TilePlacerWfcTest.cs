@@ -77,7 +77,7 @@ public class TilePlacerWfcTest : MonoBehaviour
 
             LeftSideTiles.Add(GameObject.FindGameObjectWithTag("LeftTop").GetComponent<VoxelTile>());
 
-            Storage.GetComponent<SaveTilePrefabsTest>().CreateLeftNeighbour(LeftSideTiles);
+            //Storage.GetComponent<SaveTilePrefabsTest>().CreateLeftNeighbour(LeftSideTiles);
             /*float offsetZ = 0; 
             for (int i = 0; i < LeftSideTiles.Count; i++)
             {
