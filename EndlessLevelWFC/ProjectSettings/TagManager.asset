@@ -17,6 +17,14 @@ TagManager:
   - RightBottom
   - LeftTop
   - RightTop
+  - LeftChild
+  - RightChild
+  - TopChild
+  - BottomChild
+  - LeftBottomChild
+  - RightBottomChild
+  - LeftTopChild
+  - RightTopChild
   layers:
   - Default
   - TransparentFX

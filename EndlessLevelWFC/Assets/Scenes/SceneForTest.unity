@@ -474,6 +474,11 @@ PrefabInstance:
       objectReference: {fileID: 846861165}
     - target: {fileID: 7238017656142381629, guid: d2e4d93077b76224fadc73a07958cf30,
         type: 3}
+      propertyPath: TilePlacerWfcPrefab
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7238017656142381629, guid: d2e4d93077b76224fadc73a07958cf30,
+        type: 3}
       propertyPath: TilePrefabs.Array.data[0]
       value: 
       objectReference: {fileID: 846861158}

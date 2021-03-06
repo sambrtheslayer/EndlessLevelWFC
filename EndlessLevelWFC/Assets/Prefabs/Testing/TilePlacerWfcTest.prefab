@@ -43,6 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1de4ebcc2b12f14a88dea224585a055, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MapSize: {x: 10, y: 10}
+  MapSize: {x: 5, y: 5}
   LeftSideTiles: []
   Storage: {fileID: 7238017656142381628, guid: d2e4d93077b76224fadc73a07958cf30, type: 3}

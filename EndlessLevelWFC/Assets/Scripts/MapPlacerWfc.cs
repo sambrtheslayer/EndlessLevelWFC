@@ -7,7 +7,6 @@ using Random = UnityEngine.Random;
 
 public class MapPlacerWfc : MonoBehaviour
 {
-
     private int seed;
 
     // Префабы тайлов
@@ -26,14 +25,24 @@ public class MapPlacerWfc : MonoBehaviour
     private List<VoxelTile>[,] possibleTiles;
 
     // Для теста
-    public GameObject Storage;
-    private GameObject[] LeftSide;
-    public List<VoxelTile> LeftSideTiles = new List<VoxelTile>();
-    public List<VoxelTile> sidesTiles = new List<VoxelTile>();
+    // временная переменная для хранения боковых тайлов
+    private List<GameObject> Side = new List<GameObject>();
+    [HideInInspector]
+    public List<VoxelTile> SideTiles = new List<VoxelTile>();
+
+    // Задается список боковый тайлов, если присоединяем к существующей карте
+    [HideInInspector]
+    public List<VoxelTile> forwardSidesTiles = new List<VoxelTile>();
+    [HideInInspector]
+    public List<VoxelTile> backSidesTiles = new List<VoxelTile>();
+    [HideInInspector]
+    public List<VoxelTile> leftSidesTiles = new List<VoxelTile>();
+    [HideInInspector]
+    public List<VoxelTile> rightSidesTiles = new List<VoxelTile>();
 
     void Awake()
     {
-        seed = Random.Range(0, 999);
+        seed = Random.Range(0, 99999);
         Debug.Log("seed: " + seed.ToString());
     }
 
@@ -52,7 +61,6 @@ public class MapPlacerWfc : MonoBehaviour
         // Delete map
         if (Input.GetKeyDown(KeyCode.D))
         {
-
             foreach (VoxelTile spawnedTile in spawnedTiles)
             {
                 if (spawnedTile != null) Destroy(spawnedTile.gameObject);
@@ -65,32 +73,67 @@ public class MapPlacerWfc : MonoBehaviour
             Random.InitState(seed);
             Generate();
         }
+    }
 
-        // Для теста
-        if (Input.GetKeyDown(KeyCode.A))
+ 
+    public void GenerateNeighbour(string mapEndTag)
+    {
+        SideTiles.Clear();
+        Side.Clear();
+
+        if(mapEndTag == "Left" | mapEndTag == "Right")
         {
-            LeftSideTiles.Add(GameObject.FindGameObjectWithTag("LeftBottom").GetComponent<VoxelTile>());
+            SideTiles.Add(new List<GameObject>(GameObject.FindGameObjectsWithTag(mapEndTag + "Bottom")).Find(g => g.transform.IsChildOf(gameObject.transform)).GetComponent<VoxelTile>());
 
-            LeftSide = GameObject.FindGameObjectsWithTag("Left");
+            Side = GameObject.FindGameObjectsWithTag(mapEndTag).Where(x => x.transform.IsChildOf(gameObject.transform)).ToList();
 
-            for (int i = 0; i < LeftSide.Length; i++)
+            for (int i = 0; i < Side.Count; i++)
             {
-                LeftSideTiles.Add(LeftSide[i].GetComponent<VoxelTile>());
+                SideTiles.Add(Side[i].GetComponent<VoxelTile>());
             }
 
-            LeftSideTiles.Add(GameObject.FindGameObjectWithTag("LeftTop").GetComponent<VoxelTile>());
-
-            //NeighboursManager.CreateLeftNeighbour(LeftSideTiles);
-            Storage.GetComponent<SaveTilePrefabsTest>().CreateLeftNeighbour(LeftSideTiles);
-            /*float offsetZ = 0; 
-            for (int i = 0; i < LeftSideTiles.Count; i++)
-            {
-                var item = LeftSideTiles[i];
-                print(item);
-                Instantiate(item , new Vector3(0, 0, offsetZ), item.transform.rotation);
-                offsetZ += 0.8f;
-            }*/
+            SideTiles.Add(new List<GameObject>(GameObject.FindGameObjectsWithTag(mapEndTag + "Top")).Find(g => g.transform.IsChildOf(gameObject.transform)).GetComponent<VoxelTile>());
         }
+        else if(mapEndTag == "Top" | mapEndTag == "Bottom")
+        {
+            SideTiles.Add(new List<GameObject>(GameObject.FindGameObjectsWithTag("Left" + mapEndTag)).Find(g => g.transform.IsChildOf(gameObject.transform)).GetComponent<VoxelTile>());
+
+            Side = GameObject.FindGameObjectsWithTag(mapEndTag).Where(x => x.transform.IsChildOf(gameObject.transform)).ToList();
+
+            for (int i = 0; i < Side.Count; i++)
+            {
+                SideTiles.Add(Side[i].GetComponent<VoxelTile>());
+            }
+
+            SideTiles.Add(new List<GameObject>(GameObject.FindGameObjectsWithTag("Right" + mapEndTag)).Find(g => g.transform.IsChildOf(gameObject.transform)).GetComponent<VoxelTile>());
+        }
+        
+        if(mapEndTag == "Left")
+        {
+            TilePrefabsStorage.GetComponent<SaveTilePrefabsTest>().CreateLeftNeighbour(SideTiles);
+        }
+        else if(mapEndTag == "Right")
+        {
+            TilePrefabsStorage.GetComponent<SaveTilePrefabsTest>().CreateRightNeighbour(SideTiles);
+        }
+        else if(mapEndTag == "Top")
+        {
+            TilePrefabsStorage.GetComponent<SaveTilePrefabsTest>().CreateTopNeighbour(SideTiles);
+        }
+        else
+        {
+            TilePrefabsStorage.GetComponent<SaveTilePrefabsTest>().CreateBottomNeighbour(SideTiles);
+        }
+        
+
+        /*float offsetZ = 0;
+        for (int i = 0; i < SideTiles.Count; i++)
+        {
+            var item = SideTiles[i];
+            Instantiate(item, new Vector3(0, 0, offsetZ), item.transform.rotation);
+            offsetZ += 0.8f;
+        }*/
+
     }
 
     void Generate()
@@ -109,51 +152,56 @@ public class MapPlacerWfc : MonoBehaviour
                     possibleTiles[x, y] = new List<VoxelTile>(TilePrefabs);
                 }
             }
-
-            
-
-            //Размещаем рандомный тайл в центр карты
-            //VoxelTile tileInStart = GetRandomTile(sidesTiles);
-
-            //possibleTiles[MapSize.x / 2, MapSize.y / 2] = new List<VoxelTile> { tileInCenter };
             recalcPossibleTilesQueue.Clear();
-            for (int i = 1; i < sidesTiles.Count + 1; i++)
-            {
-                VoxelTile tile = sidesTiles[i - 1];
-                possibleTiles[MapSize.x - 2, i] = new List<VoxelTile> { tile };
-                EnqueueNeighboursToRecalc(new Vector2Int(MapSize.x - 2, i));
-                //sidesTiles.Remove(sidesTiles.First());
 
+            // Добавление к краю тайлы из соседней карты
+            if (leftSidesTiles.Count != 0)
+            {
+                for (int i = 1; i < leftSidesTiles.Count + 1; i++)
+                {
+                    VoxelTile tile = leftSidesTiles[i - 1];
+                    possibleTiles[MapSize.x - 2, i] = new List<VoxelTile> { tile };
+                    EnqueueNeighboursToRecalc(new Vector2Int(MapSize.x - 2, i));
+                }
             }
 
-            /*possibleTiles[1, 1] = new List<VoxelTile> { tileInStart };
-            possibleTiles[1, 2] = new List<VoxelTile> { tileInStart };
-            possibleTiles[1, 3] = new List<VoxelTile> { tileInStart };
-            possibleTiles[1, 4] = new List<VoxelTile> { tileInStart };
-            possibleTiles[1, 5] = new List<VoxelTile> { tileInStart };
-            possibleTiles[1, 6] = new List<VoxelTile> { tileInStart };
-            possibleTiles[1, 7] = new List<VoxelTile> { tileInStart };
-            possibleTiles[1, 8] = new List<VoxelTile> { tileInStart };
-          
-            recalcPossibleTilesQueue.Clear();
-            EnqueueNeighboursToRecalc(new Vector2Int(1, 1));
-            EnqueueNeighboursToRecalc(new Vector2Int(2, 2));
-            EnqueueNeighboursToRecalc(new Vector2Int(1, 3));
-            EnqueueNeighboursToRecalc(new Vector2Int(1, 4));
-            EnqueueNeighboursToRecalc(new Vector2Int(1, 5));
-            EnqueueNeighboursToRecalc(new Vector2Int(1, 6));
-            EnqueueNeighboursToRecalc(new Vector2Int(1, 7));
-            EnqueueNeighboursToRecalc(new Vector2Int(1, 8));*/
+            if (rightSidesTiles.Count != 0)
+            {
+                for (int i = 1; i < rightSidesTiles.Count + 1; i++)
+                {
+                    VoxelTile tile = rightSidesTiles[i - 1];
+                    possibleTiles[1, i] = new List<VoxelTile> { tile };
+                    EnqueueNeighboursToRecalc(new Vector2Int(1, i));
+                }
+            }
 
+            if (forwardSidesTiles.Count != 0)
+            {
+                for (int i = 1; i < forwardSidesTiles.Count + 1; i++)
+                {
+                    VoxelTile tile = forwardSidesTiles[i - 1];
+                    possibleTiles[i, 1] = new List<VoxelTile> { tile };
+                    EnqueueNeighboursToRecalc(new Vector2Int(i, 1));
+                }
+            }
+
+            if (backSidesTiles.Count != 0)
+            {
+                for (int i = 1; i < backSidesTiles.Count + 1; i++)
+                {
+                    VoxelTile tile = backSidesTiles[i - 1];
+                    possibleTiles[i, MapSize.y - 2] = new List<VoxelTile> { tile };
+                    EnqueueNeighboursToRecalc(new Vector2Int(i, MapSize.y - 2));
+                }
+            }
 
             bool success = GenerateAllPossibleTiles();
 
             if (success) break;
-
         }
 
-        StartCoroutine(PlaceAllTiles());
-        //PlaceAllTiles();
+        //StartCoroutine(PlaceAllTiles());
+        PlaceAllTiles();
     }
 
     private bool GenerateAllPossibleTiles()
@@ -256,17 +304,16 @@ public class MapPlacerWfc : MonoBehaviour
         return true;
     }
 
-    private IEnumerator PlaceAllTiles()
+    private void PlaceAllTiles()
     {
         for (int x = 1; x < MapSize.x - 1; x++)
         {
             for (int y = 1; y < MapSize.y - 1; y++)
             {
-
                 PlaceTile(x, y);
-                yield return new WaitForSeconds(0.0001f);
             }
         }
+        rightSidesTiles.Clear();
     }
 
     private void EnqueueNeighboursToRecalc(Vector2Int position)
@@ -292,50 +339,51 @@ public class MapPlacerWfc : MonoBehaviour
         {
             if (y == 1)
             {
-                spawnedTiles[x, y].transform.GetChild(0).tag = "LeftBottom";
+                spawnedTiles[x, y].transform.tag = "LeftBottom";
+                spawnedTiles[x, y].transform.GetChild(0).tag = "LeftBottomChild";
             }
             else if (y == MapSize.y - 2)
             {
-                spawnedTiles[x, y].transform.GetChild(0).tag = "LeftTop";
+                spawnedTiles[x, y].transform.tag = "LeftTop";
+                spawnedTiles[x, y].transform.GetChild(0).tag = "LeftTopChild";
             }
             else
             {
-                spawnedTiles[x, y].transform.GetChild(0).tag = "Left";
+                spawnedTiles[x, y].transform.tag = "Left";
+                spawnedTiles[x, y].transform.GetChild(0).tag = "LeftChild";
             }
         }
         else if (x == MapSize.x - 2)
         {
             if (y == 1)
             {
-                spawnedTiles[x, y].transform.GetChild(0).tag = "RightBottom";
+                spawnedTiles[x, y].transform.tag = "RightBottom";
+                spawnedTiles[x, y].transform.GetChild(0).tag = "RightBottomChild";
             }
             else if (y == MapSize.y - 2)
             {
-                spawnedTiles[x, y].transform.GetChild(0).tag = "RightTop";
+                spawnedTiles[x, y].transform.tag = "RightTop";
+                spawnedTiles[x, y].transform.GetChild(0).tag = "RightTopChild";
             }
             else
             {
-                spawnedTiles[x, y].transform.GetChild(0).tag = "Right";
+                spawnedTiles[x, y].transform.tag = "Right";
+                spawnedTiles[x, y].transform.GetChild(0).tag = "RightChild";
             }
 
         }
         else if (y == 1)
         {
-
-            spawnedTiles[x, y].transform.GetChild(0).tag = "Bottom";
+            spawnedTiles[x, y].transform.tag = "Bottom";
+            spawnedTiles[x, y].transform.GetChild(0).tag = "BottomChild";
 
         }
         else if (y == MapSize.y - 2)
         {
 
-            spawnedTiles[x, y].transform.GetChild(0).tag = "Top";
+            spawnedTiles[x, y].transform.tag = "Top";
+            spawnedTiles[x, y].transform.GetChild(0).tag = "TopChild";
         }
-
-        /*if (x == 1 || x == MapSize.x - 2
-         || y == 1 || y == MapSize.y - 2)
-        {
-            spawnedTiles[x, y].transform.GetChild(0).tag = "MapEnd";
-        }*/
     }
 
     private VoxelTile GetRandomTile(List<VoxelTile> availableTiles)

@@ -44,3 +44,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MapSize: {x: 10, y: 10}
+  LeftSideTiles: []
+  sidesTiles: []
