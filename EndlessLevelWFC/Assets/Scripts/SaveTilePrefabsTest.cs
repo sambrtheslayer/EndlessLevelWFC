@@ -30,7 +30,9 @@ public class SaveTilePrefabsTest : MonoBehaviour
     {
         Vector3 neighbourPos = neighbour.transform.position;
         var topMap = Instantiate(Map, neighbourPos +  new Vector3(0, 0, 6.4f), Quaternion.identity);
-        topMap.GetComponent<MapPlacerWfc>().forwardSidesTiles = _sideTiles;
+        var top = topMap.GetComponent<MapPlacerWfc>();
+        top.haveBottomNeighbour = true;
+        top.forwardSidesTiles = _sideTiles;
         //mapList.AddNeighbour(mapList.start, topMap, Direction.Forward);
     }
 
@@ -38,7 +40,9 @@ public class SaveTilePrefabsTest : MonoBehaviour
     {
         Vector3 neighbourPos = neighbour.transform.position;
         var bottomMap = Instantiate(Map, neighbourPos + new Vector3(0, 0, -6.4f), Quaternion.identity);
-        bottomMap.GetComponent<MapPlacerWfc>().backSidesTiles = _sideTiles;
+        var bottom = bottomMap.GetComponent<MapPlacerWfc>();
+        bottom.haveTopNeighbour = true;
+        bottom.backSidesTiles = _sideTiles;
         //mapList.AddNeighbour(mapList.start, bottomMap, Direction.Back);
     }
 
@@ -46,7 +50,9 @@ public class SaveTilePrefabsTest : MonoBehaviour
     {
         Vector3 neighbourPos = neighbour.transform.position;
         var leftMap = Instantiate(Map, neighbourPos + new Vector3(-6.4f, 0, 0), Quaternion.identity);
-        leftMap.GetComponent<MapPlacerWfc>().leftSidesTiles = _sideTiles;
+        var left = leftMap.GetComponent<MapPlacerWfc>();
+        left.haveRightNeighbour = true;
+        left.leftSidesTiles = _sideTiles;
         //mapList.AddNeighbour(mapList.start, leftMap, Direction.Left);
     }
 
@@ -54,7 +60,9 @@ public class SaveTilePrefabsTest : MonoBehaviour
     {
         Vector3 neighbourPos = neighbour.transform.position;
         var rightMap = Instantiate(Map, neighbourPos + new Vector3(6.4f, 0, 0), Quaternion.identity);
-        rightMap.GetComponent<MapPlacerWfc>().rightSidesTiles = _sideTiles;
+        var right = rightMap.GetComponent<MapPlacerWfc>();
+        right.haveLeftNeighbour = true;
+        right.rightSidesTiles = _sideTiles;
         //mapList.AddNeighbour(mapList.start, rightMap, Direction.Right);
     }
 

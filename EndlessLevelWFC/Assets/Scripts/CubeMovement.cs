@@ -18,29 +18,36 @@ public class CubeMovement : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "LeftChild")
+        MapPlacerWfc mapGO = collision.gameObject.transform.parent.gameObject.transform.parent.gameObject.GetComponent<MapPlacerWfc>();
+
+        if (collision.gameObject.tag == "LeftChild" && mapGO.haveLeftNeighbour == false)
         {
-            collision.gameObject.transform.parent.gameObject.transform.parent.gameObject.GetComponent<MapPlacerWfc>().GenerateNeighbour("Left");
-            Destroy(gameObject);
+            mapGO.haveLeftNeighbour = true;
+            mapGO.GetTilesForNeighbour("Left");
+            //collision.gameObject.transform.parent.gameObject.transform.parent.gameObject.GetComponent<MapPlacerWfc>().GenerateNeighbour("Left");
+            //Destroy(gameObject);
         }
 
-        if (collision.gameObject.tag == "RightChild")
+        else if (collision.gameObject.tag == "RightChild" && mapGO.haveRightNeighbour == false)
         {
-            collision.gameObject.transform.parent.gameObject.transform.parent.gameObject.GetComponent<MapPlacerWfc>().GenerateNeighbour("Right");
-            Destroy(gameObject);
+            mapGO.haveRightNeighbour = true;
+            mapGO.GetTilesForNeighbour("Right");
+            //Destroy(gameObject);
         }
 
-        if (collision.gameObject.tag == "TopChild")
+        else if (collision.gameObject.tag == "TopChild" && mapGO.haveTopNeighbour == false)
         {
-            collision.gameObject.transform.parent.gameObject.transform.parent.gameObject.GetComponent<MapPlacerWfc>().GenerateNeighbour("Top");
-            Destroy(gameObject);
+            mapGO.haveTopNeighbour = true;
+            mapGO.GetTilesForNeighbour("Top");
+            //Destroy(gameObject);
 
         }
 
-        if (collision.gameObject.tag == "BottomChild")
+        else if (collision.gameObject.tag == "BottomChild" && mapGO.haveBottomNeighbour == false)
         {
-            collision.gameObject.transform.parent.gameObject.transform.parent.gameObject.GetComponent<MapPlacerWfc>().GenerateNeighbour("Bottom");
-            Destroy(gameObject);
+            mapGO.haveBottomNeighbour = true;
+            mapGO.GetTilesForNeighbour("Bottom");
+            //Destroy(gameObject);
         }
     }
 }

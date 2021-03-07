@@ -24,7 +24,6 @@ public class MapPlacerWfc : MonoBehaviour
     // Список возможных тайлов для каждой из ячеек карты
     private List<VoxelTile>[,] possibleTiles;
 
-    // Для теста
     // временная переменная для хранения боковых тайлов
     private List<GameObject> Side = new List<GameObject>();
     [HideInInspector]
@@ -39,6 +38,15 @@ public class MapPlacerWfc : MonoBehaviour
     public List<VoxelTile> leftSidesTiles = new List<VoxelTile>();
     [HideInInspector]
     public List<VoxelTile> rightSidesTiles = new List<VoxelTile>();
+
+    //[HideInInspector]
+    public bool haveTopNeighbour = false;
+    //[HideInInspector]
+    public bool haveBottomNeighbour = false;
+    //[HideInInspector]
+    public bool haveLeftNeighbour = false;
+    //[HideInInspector]
+    public bool haveRightNeighbour = false;
 
     void Awake()
     {
@@ -76,7 +84,7 @@ public class MapPlacerWfc : MonoBehaviour
     }
 
  
-    public void GenerateNeighbour(string mapEndTag)
+    public void GetTilesForNeighbour(string mapEndTag)
     {
         SideTiles.Clear();
         Side.Clear();
